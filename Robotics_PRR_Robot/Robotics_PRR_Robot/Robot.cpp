@@ -48,6 +48,13 @@ void Robot::joint2Adjust(float amount) {
 }
 
 void Robot::paintBrushXAdjust(float amount) {
+	
+	joint0Adjust(amount);
+
+	//Using sliding for left and right inverse kinematics renders
+	//all code below irrevlant
+
+	/*
 	if (reachable(paintx + amount, painty)) {
 		paintx += amount;
 
@@ -69,12 +76,13 @@ void Robot::paintBrushXAdjust(float amount) {
 		float radians = deg2rad(theta1);
 		joint2x = joint1x + (length1*cos(radians));
 		joint2y = joint1y + (length1*sin(radians));
-		/*
-		radians = deg2rad(theta2+=alpha);
-		paintx = joint2x + (length2*cos(radians));
-		painty = joint2y + (length2*sin(radians));
-		*/
+		
+		//radians = deg2rad(theta2+=alpha);
+		//paintx = joint2x + (length2*cos(radians));
+		//painty = joint2y + (length2*sin(radians));
+		
 	}
+	*/
 }
 
 void Robot::paintBrushYAdjust(float amount) {
