@@ -41,12 +41,12 @@ Interface::Interface(int argc, char** argv) {
 
 	// World buttons
 		// Left
-		buttons.push_back(new Button("Left", paintBrushSlideLeft));
+		buttons.push_back(new Button("Left", joint0SlideLeft));
 		// Up/Down
 		buttons.push_back(new Button("Up", paintBrushSlideUp));
 		buttons.push_back(new Button("Down", paintBrushSlideDown));
 		// Right
-		buttons.push_back(new Button("Right", paintBrushSlideRight));
+		buttons.push_back(new Button("Right", joint0SlideRight));
 
 	// Settings
 		buttons.push_back(new Button("+", increaseStep));
