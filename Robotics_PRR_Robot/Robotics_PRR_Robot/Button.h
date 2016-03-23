@@ -13,5 +13,5 @@ public:
 	char* label;
 	ButtonCallback onClick;
 
-	Button(float x, float y, float w, float h, char* label, ButtonCallback onClick);
+	Button(char* label, ButtonCallback onClick);
 };

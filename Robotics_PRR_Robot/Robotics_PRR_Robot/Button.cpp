@@ -2,11 +2,11 @@
 #include "Button.h"
 
 
-Button::Button(float x, float y, float w, float h, char* label, ButtonCallback onClick) {
-	this->x = x;
-	this->y = y;
-	this->w = w;
-	this->h = h;
+Button::Button(char* label, ButtonCallback onClick) {
+
+	this->x = this->y = 0;
+	this->w = this->h = 1;
+
 	this->label = label;
 	this->onClick = onClick;
 }

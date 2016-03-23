@@ -2,6 +2,8 @@
 
 Graphics::Graphics(int argc, char ** argv, int width, int height, int start_x, int start_y, const char * window_name) {
 
+	paint_radius = 10.0f;
+
 	screen_width = width;
 	screen_height = height;
 
@@ -57,27 +59,99 @@ void Graphics::positionButtons(vector<Button*> buttons) {
 
 	// This determines the x and y coordinates of each of the buttons so that they can be accurately drawn to the screen
 
-	float x		= -1 + outer_spacing + inner_spacing;
+	float horizontal_spacing = button_width + inner_spacing;
+	float vertical_spacing = button_height + inner_spacing;
+
+
+	float x0	= -1 + outer_spacing + inner_spacing;
 	float y0	= -1 + outer_spacing + inner_spacing;
-	float y1	= y0 + inner_spacing + button_height;
-	float y2	= y0 + inner_spacing + (button_height / 2.0f);
+	
+	float x1 = 1 - outer_spacing - inner_spacing - button_width;
+	float x5 = x1 - (horizontal_spacing / 2);
+	float y5 = y0 + (vertical_spacing / 2);
 
-	for (Button* button : buttons) {
 
-		button->x = x + (inner_spacing + button_width) * button->x;;
+	Button* jointLeft = buttons[0];
+		// Bottom left corner
+		jointLeft->x = x0;
+		jointLeft->y = y0;
+		jointLeft->w = button_width;
+		jointLeft->h = button_height;
 
-		if (button->y == 0) {
-			button->y = y0;
-		}
-		else if (button->y == 1) {
-			button->y = y1;
-		}
-		else {
-			button->y = y2;
-		}
-		button->w = button_width;
-		button->h = button_height;
-	}
+	Button* jointRight = buttons[1];
+		jointRight->x = x0 + horizontal_spacing;
+		jointRight->y = y0;
+		jointRight->w = button_width;
+		jointRight->h = button_height;
+
+	Button* joint1CCW = buttons[2];
+		joint1CCW->x = x0;
+		joint1CCW->y = y0 + vertical_spacing;
+		joint1CCW->w = button_width;
+		joint1CCW->h = button_height;
+
+	Button* joint1CW = buttons[3];
+		joint1CW->x = x0 + horizontal_spacing;
+		joint1CW->y = y0 + vertical_spacing;
+		joint1CW->w = button_width;
+		joint1CW->h = button_height;
+
+	Button* joint2CCW = buttons[4];
+		joint2CCW->x = x0;
+		joint2CCW->y = y0 + vertical_spacing + vertical_spacing;
+		joint2CCW->w = button_width;
+		joint2CCW->h = button_height;
+
+	Button* joint2CW = buttons[5];
+		joint2CW->x = x0 + horizontal_spacing;
+		joint2CW->y = y0 + vertical_spacing + vertical_spacing;
+		joint2CW->w = button_width;
+		joint2CW->h = button_height;
+
+	Button* painter = buttons[6];
+	painter->x = x0 + horizontal_spacing * 3;
+	painter->y = y0 + vertical_spacing * 2;
+	painter->w = button_width;
+	painter->h = button_height;
+
+	Button* leftSlide = buttons[7];
+	leftSlide->x = x1 - button_width - button_width;
+	leftSlide->y = y0 + button_height;
+	leftSlide->w = button_width;
+	leftSlide->h = button_height;
+
+	Button* upSlide = buttons[8];
+	upSlide->x = x1 - button_width;
+	upSlide->y = y0 + button_height + button_height;
+	upSlide->w = button_width;
+	upSlide->h = button_height;
+
+	Button* downSlide = buttons[9];
+	downSlide->x = x1 - button_width;
+	downSlide->y = y0;
+	downSlide->w = button_width;
+	downSlide->h = button_height;
+
+	Button* rightSlide = buttons[10];
+	rightSlide->x = x1;
+	rightSlide->y = y0 + button_height;
+	rightSlide->w = button_width;
+	rightSlide->h = button_height;
+
+	Button* increment = buttons[11];
+	increment->x = painter->x;
+	increment->y = painter->y - vertical_spacing;
+	increment->w = button_width;
+	increment->h = button_height;
+
+	Button* decrement = buttons[12];
+	decrement->x = painter->x;
+	decrement->y = painter->y - vertical_spacing - vertical_spacing;
+	decrement->w = button_width;
+	decrement->h = button_height;
+
+
+
 }
 
 void Graphics::drawBackground() {
@@ -192,7 +266,6 @@ Point rotate(float x, float y, float angle) {
 }
 
 void Graphics::drawPaint() {
-	float radius = 5.0f;
 	for (int i = 0; i < paint_locations.size(); i += 2) {
 		float x_offset = paint_locations[i];
 		float y_offset = paint_locations[i + 1] - outer_spacing;
@@ -201,9 +274,9 @@ void Graphics::drawPaint() {
 		float y = 1;
 
 		for (float angle = 0; angle < 180; angle++) {
-			Point x0 = rotate(x, y, angle).pixelate(radius, screen_width).offset(x_offset, y_offset);
-			Point x1 = rotate(x, y, angle + 90).pixelate(radius, screen_width).offset(x_offset, y_offset);
-			Point x2 = rotate(x, y, angle + 180).pixelate(radius, screen_width).offset(x_offset, y_offset);
+			Point x0 = rotate(x, y, angle).pixelate(paint_radius, screen_width).offset(x_offset, y_offset);
+			Point x1 = rotate(x, y, angle + 90).pixelate(paint_radius, screen_width).offset(x_offset, y_offset);
+			Point x2 = rotate(x, y, angle + 180).pixelate(paint_radius, screen_width).offset(x_offset, y_offset);
 
 			glColor3f(0.5f, 0.5f, 0.5f);
 			glBegin(GL_TRIANGLES);

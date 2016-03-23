@@ -1,6 +1,8 @@
 #include "Robot.h"
 
+
 Robot::Robot() {
+	joint_slide_amount = joint_rotate_amount = paint_slide_amount = 5;
 
 	joint0x = 0;
 	joint0y = 0;
@@ -13,6 +15,9 @@ Robot::Robot() {
 
 	paintx  = 0;
 	painty  = 325;
+
+	theta2 = 90;
+	theta1 = 90;
 }
 
 // =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
@@ -20,106 +25,102 @@ Robot::Robot() {
 // =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
 
 // Testing values to make sure the robot can be drawn with updated values
-void Robot::joint0Slide(float amount) {
+void Robot::joint0Adjust(float amount) {
 	joint0x += amount;
 	joint1x += amount;
 	joint2x += amount;
 	paintx += amount;
 }
-
-void Robot::joint1CCW(float amount) {
-	float radians = (amount*M_PI) / 180;
-	float sn = sin(radians);
-	float cs = cos(radians);
-	joint2x = joint2x - joint1x;
-	joint2y = joint2y - joint1y;
-	float xx = joint2x*cs - joint2y*sn;
-	float yy = joint2x*sn + joint2y*cs;
-	joint2x = xx + joint1x;
-	joint2y = yy + joint1y;
-
-	//correct distance, wrong postion of last link when rotating middle one
-	/* 
-	float doubleradians = ((amount + amount)*M_PI) / 180;
-	float snd = sin(doubleradians);
-	float csd = cos(doubleradians);
-	paintx = paintx - joint2x;
-	painty = painty - joint2y;
-	xx = paintx*snd - painty*csd;
-	yy = paintx*csd + painty*snd;
-	paintx = xx + joint2x;
-	painty = yy + joint2y;
-	*/
-	
-	float doubleradians = ((amount+amount)*M_PI) / 180;
-	float snd = sin(doubleradians);
-	float csd = cos(doubleradians);
-	paintx = paintx - joint2x;
-	painty = painty - joint2y;
-	xx = paintx*csd - painty*snd;
-	yy = paintx*snd + painty*csd;
-	paintx = xx + joint2x;
-	painty = yy + joint2y;
-	
+void Robot::joint1Adjust(float amount) {
+	theta1 += amount;
+	float radians = deg2rad(theta1);
+	joint2x = joint1x + (length1*cos(radians));
+	joint2y = joint1y + (length1*sin(radians));
+	radians = deg2rad(theta2);
+	paintx = joint2x + (length2*cos(radians));
+	painty = joint2y + (length2*sin(radians));
+}
+void Robot::joint2Adjust(float amount) {
+	theta2 += amount;
+	float radians = deg2rad(theta2);
+	paintx = joint2x + (length2*cos(radians));
+	painty = joint2y + (length2*sin(radians));
 }
 
-void Robot::joint1CC(float amount) {
-	float radians = (amount*M_PI) / 180;
-	float sn = sin(radians);
-	float cs = cos(radians);
-	joint2x = joint2x - joint1x;
-	joint2y = joint2y - joint1y;
-	float xx = joint2x*cs + joint2y*sn;
-	float yy = -joint2x*sn + joint2y*cs;
-	joint2x = xx + joint1x;
-	joint2y = yy + joint1y;
+void Robot::paintBrushXAdjust(float amount) {
+	if (reachable(paintx + amount, painty)) {
+		paintx += amount;
 
-	//correct distance, wrong postion of last link when rotating middle one
-	/*
-	float doubleradians = ((amount + amount)*M_PI) / 180;
-	float snd = sin(doubleradians);
-	float csd = cos(doubleradians);
-	paintx = paintx - joint2x;
-	painty = painty - joint2y;
-	xx = paintx*snd + painty*csd;
-	yy = -paintx*csd + painty*snd;
-	paintx = xx + joint2x;
-	painty = yy + joint2y;
-	*/
+		//float phi = rad2deg(acos(deg2rad((paintx*paintx+painty*painty+length1*length1-length2*length2)/(2*length1*sqrtf(paintx*paintx+painty*painty)))));
+		float paintxT = paintx - joint1x;
+		float paintyT = painty - joint1y;
+		float phi = rad2deg(acos(deg2rad((paintxT*paintxT + painty*painty + length1*length1 - length2*length2) / (2 * length1*sqrtf(paintxT*paintxT + paintyT*paintyT)))));
 
-	
-	float doubleradians = ((amount+amount)*M_PI) / 180;
-	float snd = sin(doubleradians);
-	float csd = cos(doubleradians);
-	paintx = paintx - joint2x;
-	painty = painty - joint2y;
-	xx = paintx*csd + painty*snd;
-	yy = -paintx*snd + painty*csd;
-	paintx = xx + joint2x;
-	painty = yy + joint2y;
-	
+		float beta = rad2deg(atan2(painty, paintx));
+		float angle1 = beta - phi;
+		//float omega = rad2deg(acos(deg2rad((paintx*paintx+painty*painty-length1*length1-length2*length2)/(2*length1*length2))));
+		//float alpha = 180 - omega;
+
+		if (amount > 0)
+			theta1 += -angle1;
+		else
+			theta1 += angle1;
+
+		float radians = deg2rad(theta1);
+		joint2x = joint1x + (length1*cos(radians));
+		joint2y = joint1y + (length1*sin(radians));
+		/*
+		radians = deg2rad(theta2+=alpha);
+		paintx = joint2x + (length2*cos(radians));
+		painty = joint2y + (length2*sin(radians));
+		*/
+	}
 }
 
-void Robot::joint2CCW(float amount) {
-	float radians = (amount*M_PI) / 180;
-	float sn = sin(radians);
-	float cs = cos(radians);
-	paintx = paintx - joint2x;
-	painty = painty - joint2y;
-	float xx = paintx*cs - painty*sn;
-	float yy = paintx*sn + painty*cs;
-	paintx = xx + joint2x;
-	painty = yy + joint2y;
+void Robot::paintBrushYAdjust(float amount) {
+	if (reachable(paintx, painty + amount)) {
+		painty += amount;
+
+		//float phi = rad2deg(acos(deg2rad((paintx*paintx+painty*painty+length1*length1-length2*length2)/(2*length1*sqrtf(paintx*paintx+painty*painty)))));
+		float paintxT = paintx - joint1x;
+		float paintyT = painty - joint1y;
+		float phi = rad2deg(acos(deg2rad((paintxT*paintxT + painty*painty + length1*length1 - length2*length2) / (2 * length1*sqrtf(paintxT*paintxT + paintyT*paintyT)))));
+
+		float beta = rad2deg(atan2(painty,paintx));
+		float angle1 = beta - phi;
+		//float omega = rad2deg(acos(deg2rad((paintx*paintx+painty*painty-length1*length1-length2*length2)/(2*length1*length2))));
+		//float alpha = 180 - omega;
+
+		if (amount < 0)
+			theta1 += -angle1;
+		else
+			theta1 += angle1;
+
+		float radians = deg2rad(theta1);
+		joint2x = joint1x + (length1*cos(radians));
+		joint2y = joint1y + (length1*sin(radians));
+		/*
+		radians = deg2rad(theta2+=alpha);
+		paintx = joint2x + (length2*cos(radians));
+		painty = joint2y + (length2*sin(radians));
+		*/
+	}
 }
 
-void Robot::joint2CC(float amount) {
-	float radians = (amount*M_PI) / 180;
-	float sn = sin(radians);
-	float cs = cos(radians);
-	paintx = paintx - joint2x;
-	painty = painty - joint2y;
-	float xx = paintx*cs + painty*sn;
-	float yy = -paintx*sn + painty*cs;
-	paintx = xx + joint2x;
-	painty = yy + joint2y;
+//checks if point is within reachable workspace
+bool Robot::reachable(float x, float y) {
+	float distance = sqrt((x-joint1x)*(x-joint1x) + (y-joint1y)*(y-joint1y));
+	if (distance > length1 + length2)
+		return false;
+	if (distance < length1 - length2)
+		return false;
+	return true;
+}
+
+float Robot::rad2deg(float n) {
+	return (n * 180) / M_PI;
+}
+
+float Robot::deg2rad(float n) {
+	return (n*M_PI) / 180;
 }

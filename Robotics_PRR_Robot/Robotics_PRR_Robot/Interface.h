@@ -58,6 +58,7 @@ public:
 	// Callback functions have to be static
 	static void paintAction();
 
+	// Joint controls
 	static void joint0SlideLeft();
 	static void joint0SlideRight();
 
@@ -66,6 +67,17 @@ public:
 
 	static void joint2CCW();
 	static void joint2CW();
+
+	// World controls
+	static void paintBrushSlideLeft();
+	static void paintBrushSlideRight();
+	static void paintBrushSlideUp();
+	static void paintBrushSlideDown();
+
+	// Settings
+	static void increaseStep();
+	static void decreaseStep();
+
 };
 
 #endif

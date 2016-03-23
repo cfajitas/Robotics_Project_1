@@ -21,8 +21,11 @@ public:
 	const float secondary_width = (0.3f) * 2;
 	const float outer_spacing = (2.0f - primary_width - secondary_width) / 2.0f;
 	const float inner_spacing = 0.05f;
-	const float button_width = (2 - (2 * outer_spacing) - (5 * inner_spacing))/4.0f;
-	const float button_height = (secondary_width - (3 * inner_spacing))/2.0f;
+	const float button_width = (2 - (2 * outer_spacing) - (5 * inner_spacing))/8.0f;
+	const float button_height = (secondary_width - (4 * inner_spacing))/3.0f;
+
+	// ~ Updates on user input ~
+	float paint_radius;
 
 	int screen_width;
 	int screen_height;

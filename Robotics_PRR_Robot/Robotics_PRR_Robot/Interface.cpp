@@ -25,17 +25,32 @@ Interface::Interface(int argc, char** argv) {
 		// means column 3, row 0.5, normal width, normal height
 	// This initialization is then transformed into proper screen position in 'positionButtons()'
 
-	// Slider
-	buttons.push_back(new Button(0, 0, 1, 1, "Slide left", joint0SlideLeft));
-	buttons.push_back(new Button(0, 1, 1, 1, "Slide right",joint0SlideRight));
-	// Joint 1
-	buttons.push_back(new Button(1, 0, 1, 1, "CCW", joint1CCW));
-	buttons.push_back(new Button(1, 1, 1, 1, "CW", joint1CW));
-	// Joint 2
-	buttons.push_back(new Button(2, 0, 1, 1, "CCW", joint2CCW));
-	buttons.push_back(new Button(2, 1, 1, 1, "CW", joint2CW));
+	// Joint buttons
+		// Slider
+		buttons.push_back(new Button("Slide left", joint0SlideLeft));
+		buttons.push_back(new Button("Slide right",joint0SlideRight));
+		// Joint 1
+		buttons.push_back(new Button("CCW", joint1CCW));
+		buttons.push_back(new Button("CW", joint1CW));
+		// Joint 2
+		buttons.push_back(new Button("CCW", joint2CCW));
+		buttons.push_back(new Button("CW", joint2CW));
+
 	// Paint
-	buttons.push_back(new Button(3, 0.5f, 1, 1, "Paint", paintAction));
+	buttons.push_back(new Button("Paint", paintAction));
+
+	// World buttons
+		// Left
+		buttons.push_back(new Button("Left", paintBrushSlideLeft));
+		// Up/Down
+		buttons.push_back(new Button("Up", paintBrushSlideUp));
+		buttons.push_back(new Button("Down", paintBrushSlideDown));
+		// Right
+		buttons.push_back(new Button("Right", paintBrushSlideRight));
+
+	// Settings
+		buttons.push_back(new Button("+", increaseStep));
+		buttons.push_back(new Button("-", decreaseStep));
 
 	graphics->positionButtons(buttons);
 }
@@ -62,6 +77,7 @@ Button* Interface::decodeMouse() {
 		y1 = ((y1 + 1) / 2.0f)*SCREEN_HEIGHT;
 
 		if (x0 <= x && x <= x1 && y0 <= y && y <= y1) {
+			mouseAction = NULL;
 			return button;
 		}
 	}
@@ -101,25 +117,58 @@ void Interface::paintAction() {
 }
 
 void Interface::joint0SlideLeft() {
-	Interface::getInstance()->robot->joint0Slide( -1 * Interface::getInstance()->robot->slide_amount);
+	Interface::getInstance()->robot->joint0Adjust( -1 * Interface::getInstance()->robot->joint_slide_amount);
 }
 
 void Interface::joint0SlideRight() {
-	Interface::getInstance()->robot->joint0Slide(Interface::getInstance()->robot->slide_amount);
+	Interface::getInstance()->robot->joint0Adjust(Interface::getInstance()->robot->joint_slide_amount);
 }
 
 void Interface::joint1CCW() {
-	Interface::getInstance()->robot->joint1CCW(Interface::getInstance()->robot->rotate_amount);
+	Interface::getInstance()->robot->joint1Adjust(Interface::getInstance()->robot->joint_rotate_amount);
 }
 
 void Interface::joint1CW() {
-	Interface::getInstance()->robot->joint1CC(Interface::getInstance()->robot->rotate_amount);
+	Interface::getInstance()->robot->joint1Adjust(-1 * Interface::getInstance()->robot->joint_rotate_amount);
 }
 
 void Interface::joint2CCW() {
-	Interface::getInstance()->robot->joint2CCW(Interface::getInstance()->robot->rotate_amount);
+	Interface::getInstance()->robot->joint2Adjust(Interface::getInstance()->robot->joint_rotate_amount);
 }
 
 void Interface::joint2CW() {
-	Interface::getInstance()->robot->joint2CC(Interface::getInstance()->robot->rotate_amount);
+	Interface::getInstance()->robot->joint2Adjust(-1 * Interface::getInstance()->robot->joint_rotate_amount);
+}
+
+
+
+void Interface::paintBrushSlideLeft() {
+	Interface::getInstance()->robot->paintBrushXAdjust(-1 * Interface::getInstance()->robot->paint_slide_amount);
+}
+
+void Interface::paintBrushSlideRight() {
+	Interface::getInstance()->robot->paintBrushXAdjust(Interface::getInstance()->robot->paint_slide_amount);
+}
+
+void Interface::paintBrushSlideUp() {
+	Interface::getInstance()->robot->paintBrushYAdjust(Interface::getInstance()->robot->paint_slide_amount);
+}
+
+void Interface::paintBrushSlideDown() {
+	Interface::getInstance()->robot->paintBrushYAdjust(-1 * Interface::getInstance()->robot->paint_slide_amount);
+}
+
+
+void Interface::increaseStep() {
+	Interface::getInstance()->robot->joint_rotate_amount++;
+	Interface::getInstance()->robot->joint_slide_amount++;
+	Interface::getInstance()->robot->paint_slide_amount++;
+	Interface::getInstance()->graphics->paint_radius++;
+}
+
+void Interface::decreaseStep() {
+	Interface::getInstance()->robot->joint_rotate_amount--;
+	Interface::getInstance()->robot->joint_slide_amount--;
+	Interface::getInstance()->robot->paint_slide_amount--;
+	Interface::getInstance()->graphics->paint_radius--;
 }

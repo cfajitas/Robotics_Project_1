@@ -1,20 +1,8 @@
 ﻿  Robot.cpp
-c:\users\cfleitas\downloads\robotics_project_1-master\robotics_project_1-master\robotics_prr_robot\robotics_prr_robot\robot.cpp(31): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\cfleitas\downloads\robotics_project_1-master\robotics_project_1-master\robotics_prr_robot\robotics_prr_robot\robot.cpp(32): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\cfleitas\downloads\robotics_project_1-master\robotics_project_1-master\robotics_prr_robot\robotics_prr_robot\robot.cpp(33): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\cfleitas\downloads\robotics_project_1-master\robotics_project_1-master\robotics_prr_robot\robotics_prr_robot\robot.cpp(53): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\cfleitas\downloads\robotics_project_1-master\robotics_project_1-master\robotics_prr_robot\robotics_prr_robot\robot.cpp(54): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\cfleitas\downloads\robotics_project_1-master\robotics_project_1-master\robotics_prr_robot\robotics_prr_robot\robot.cpp(55): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\cfleitas\downloads\robotics_project_1-master\robotics_project_1-master\robotics_prr_robot\robotics_prr_robot\robot.cpp(66): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\cfleitas\downloads\robotics_project_1-master\robotics_project_1-master\robotics_prr_robot\robotics_prr_robot\robot.cpp(67): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\cfleitas\downloads\robotics_project_1-master\robotics_project_1-master\robotics_prr_robot\robotics_prr_robot\robot.cpp(68): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\cfleitas\downloads\robotics_project_1-master\robotics_project_1-master\robotics_prr_robot\robotics_prr_robot\robot.cpp(89): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\cfleitas\downloads\robotics_project_1-master\robotics_project_1-master\robotics_prr_robot\robotics_prr_robot\robot.cpp(90): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\cfleitas\downloads\robotics_project_1-master\robotics_project_1-master\robotics_prr_robot\robotics_prr_robot\robot.cpp(91): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\cfleitas\downloads\robotics_project_1-master\robotics_project_1-master\robotics_prr_robot\robotics_prr_robot\robot.cpp(102): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\cfleitas\downloads\robotics_project_1-master\robotics_project_1-master\robotics_prr_robot\robotics_prr_robot\robot.cpp(103): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\cfleitas\downloads\robotics_project_1-master\robotics_project_1-master\robotics_prr_robot\robotics_prr_robot\robot.cpp(104): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\cfleitas\downloads\robotics_project_1-master\robotics_project_1-master\robotics_prr_robot\robotics_prr_robot\robot.cpp(114): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\cfleitas\downloads\robotics_project_1-master\robotics_project_1-master\robotics_prr_robot\robotics_prr_robot\robot.cpp(115): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\cfleitas\downloads\robotics_project_1-master\robotics_project_1-master\robotics_prr_robot\robotics_prr_robot\robot.cpp(116): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\cfleitas\downloads\robotics_project_1-master\robotics_project_1-master\robotics_prr_robot\robotics_prr_robot\robot.cpp(121): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+c:\users\cfleitas\downloads\robotics_project_1-master\robotics_project_1-master\robotics_prr_robot\robotics_prr_robot\robot.cpp(125): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  Robotics_PRR_Robot.cpp
+  Interface.cpp
   Robotics_PRR_Robot.vcxproj -> C:\Users\cfleitas\Downloads\Robotics_Project_1-master\Robotics_Project_1-master\Robotics_PRR_Robot\Debug\Robotics_PRR_Robot.exe

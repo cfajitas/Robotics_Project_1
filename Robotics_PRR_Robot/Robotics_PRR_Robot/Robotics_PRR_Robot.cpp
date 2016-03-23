@@ -23,12 +23,40 @@ void mouseButton(int button, int state, int x, int y) {
 							// If this was at the end of render(), the program would loop foreverrrrr
 }
 
+void keyboard(unsigned char key, int x, int y) {
+
+	if (key == ' ') {
+		Interface::getInstance()->paintAction();
+		glutPostRedisplay();
+	}
+
+}
+
+void arrowPresses(int key, int x, int y) {
+	switch (key) {
+
+	case GLUT_KEY_UP:
+		Interface::getInstance()->paintBrushSlideUp();
+		break;
+	case GLUT_KEY_DOWN:
+		Interface::getInstance()->paintBrushSlideDown();
+		break;
+	case GLUT_KEY_LEFT:
+		Interface::getInstance()->paintBrushSlideLeft();
+		break;
+	case GLUT_KEY_RIGHT:
+		Interface::getInstance()->paintBrushSlideRight();
+		break;
+	}
+
+	glutPostRedisplay();
+}
+
 void render() {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClearColor(0, 0, 0, 0);	// Clears to black
 	//---------------------------
 
-	printf("-----------------New frame---------------------------(Debugging)--------\n\n");
 	Interface::getInstance()->update();
 	Interface::getInstance()->drawUpdate();
 
@@ -42,6 +70,8 @@ int main(int argc, char** argv) {
 
 	glutDisplayFunc(render);
 	glutMouseFunc(mouseButton);
+	glutSpecialFunc(arrowPresses);
+	glutKeyboardFunc(keyboard);
 	glutMainLoop();
 
 	return 1;
