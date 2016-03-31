@@ -16,7 +16,7 @@
 using namespace std;
 
 extern int MODE;
-extern char* IPADDRESS;
+extern char IPADDRESS[1024];
 
 #define SCREEN_WIDTH 600
 #define SCREEN_HEIGHT 600
