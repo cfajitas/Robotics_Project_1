@@ -14,4 +14,6 @@ public:
 	ButtonCallback onClick;
 
 	Button(char* label, ButtonCallback onClick);
+
+	char* getLabel();
 };

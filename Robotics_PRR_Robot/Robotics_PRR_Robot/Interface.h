@@ -10,7 +10,13 @@
 #include "Robot.h"
 #include "Graphics.h"
 
+#include "Server.h"
+#include "Client.h"
+
 using namespace std;
+
+extern int MODE;
+extern char* IPADDRESS;
 
 #define SCREEN_WIDTH 600
 #define SCREEN_HEIGHT 600
@@ -36,6 +42,9 @@ public:
 	vector<Button*> buttons;
 	Graphics* graphics;
 
+	Server* server;
+	Client* client;
+
 	// =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
 	// =~=~=~  CONSTRUCTORS  =~=~=~=~=~=~
 	// =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
@@ -50,6 +59,8 @@ public:
 	void determineAction();
 
 	Button* decodeMouse();
+
+	void processServer();
 
 	// =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
 	// =~=~  Robot Functions  ~=~=~=~=~=~

@@ -10,3 +10,7 @@ Button::Button(char* label, ButtonCallback onClick) {
 	this->label = label;
 	this->onClick = onClick;
 }
+
+char* Button::getLabel() {
+	return label;
+}

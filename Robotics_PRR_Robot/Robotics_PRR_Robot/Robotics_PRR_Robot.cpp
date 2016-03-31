@@ -8,6 +8,9 @@
 
 using namespace std;
 
+int MODE = -1;
+char* IPADDRESS;
+
 //Interface* gui;
 
 /*
@@ -65,6 +68,33 @@ void render() {
 }
 
 int main(int argc, char** argv) {
+
+	char in;
+	while (MODE == -1)
+	{
+		printf("Please Enter s for Server or c for Client \n");
+		in = getc(stdin);
+		cin.ignore(512, '\n');
+		if (in == 's') {
+			MODE = 0;
+			printf("Entering Server Mode \n");
+		}
+		else if (in == 'c') {
+			MODE = 1;
+			printf("Entering Client Mode\n");
+		}
+		else {
+			printf("ERROR Enter Valid Input \n");
+		}
+	}
+	//Set ip here for easy testing
+	IPADDRESS = "10.0.1.59";
+
+	//**INPUTING IP CURRENTLY BROKEN
+	//if (MODE == 1) {
+	//	printf("Please Enter IP Address\n");
+	//	scanf_s("%c", IPADDRESS);
+	//}
 
 	Interface::getInstance(argc, argv);
 

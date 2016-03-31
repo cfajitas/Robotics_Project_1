@@ -18,6 +18,12 @@ Interface::Interface(int argc, char** argv) {
 	robot = new Robot();
 	graphics = new Graphics(argc, argv, SCREEN_WIDTH, SCREEN_HEIGHT, WINDOW_START_X, WINDOW_START_Y, window_name);
 
+	if (MODE == 0) {
+		server = new Server(NULL,"50000");
+	}
+	else {
+		client = new Client(IPADDRESS,"50000");
+	}
 
 	// For initialization: 0, 0, 1, 1
 		// means column 0, row 0, normal width, normal height
@@ -88,10 +94,43 @@ Button* Interface::decodeMouse() {
 void Interface::determineAction() {
 	//  Based on the current MouseAction, apply changes to robot
 	Button* targetButton = decodeMouse();
+
+	if (MODE == 0) {
+		processServer();
+	}
+	
 	if (targetButton != NULL) {
+		if (MODE == 1) {
+			printf("Button: %s\n", targetButton->getLabel());
+			client->ClientSend(targetButton->getLabel());
+		}
 		targetButton->onClick();
 	}
 }
+
+void Interface::processServer() {
+	
+	char* buttonName;
+	Button* target = NULL;
+
+	//needs fixing 
+	/*
+	while (server->isServerDone())
+	{
+		buttonName = server->ServerRun();
+		printf("Recieved: %s\n", buttonName);
+
+		for (auto &button : buttons) {
+			if (button->getLabel() == buttonName) {
+				target = button;
+			}
+		}
+		target->onClick();
+	}
+	*/
+}
+
+
 
 void Interface::update() {
 
@@ -101,7 +140,6 @@ void Interface::update() {
 	
 	// Respond to user input
 	determineAction();
-	
 }
 
 void Interface::drawUpdate() {
