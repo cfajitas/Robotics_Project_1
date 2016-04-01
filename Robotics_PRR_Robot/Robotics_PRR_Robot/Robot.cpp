@@ -94,6 +94,67 @@ void Robot::paintBrushXAdjust(float amount) {
 	*/
 }
 
+/*****************************************************
+	       INVERSE KINEMATICS FOR ROBOT
+******************************************************/
+float dist(float x1, float y1, float x2, float y2) {
+	return sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1));
+}
+
+void Robot::inverse_kinematics(float px, float py, float alpha) {
+
+	// get all info about robot before computing
+	get_robot_info();
+	cout << "Given (px, py, alpha): ";
+	cout << "(" << px << ", " << py << ", " << alpha << ")" << endl;
+	cout << "Find d1, theta1, and theta2..." << endl << endl;
+
+	// initialize variables
+	float a1 = 150, a2 = 100, a3 = 75;	// arm lenghts
+	float theta1_initial = theta1;
+	float theta2_initial = theta2;
+
+	// start kinematics computations
+	float radians = deg2rad(theta1);
+	float radians2 = deg2rad(alpha);
+	float x4 = joint1x + (a2*cos(radians)) + (a3*cos(radians2));
+	float y4 = joint1y + (a2*sin(radians)) + (a3*sin(radians2));
+	cout << "<< x4 << " << x4 << endl;
+	cout << "<< y4 << " << y4 << endl;
+
+	radians = (y4 - a1 - (a3*sin(radians2))) / a2;
+	theta1 = acos(radians);
+	alpha = theta1 + theta2;
+	theta2 = alpha - theta1;
+	cout << "<< new theta1 << " << theta1 << endl;
+	cout << "<< new theta2 << " << theta2 << endl;
+	cout << "<< new alpha << " << alpha << endl;
+
+	radians = deg2rad(theta1);
+	radians2 = deg2rad(alpha);
+	float d1 = x4 - (a2*cos(radians) - (a3*cos(radians2)));
+	cout << "<< new d1 << " << d1 << endl;
+
+}
+
+void Robot::get_robot_info() {
+	cout << "Coordinates of robot positions: " << endl;
+	cout << "-------------------------------" << endl;
+	cout << "Joint0x :" << joint0x << endl;
+	cout << "Joint0y :" << joint0y << endl;
+	cout << "Joint1x :" << joint1x << endl;
+	cout << "Joint1y :" << joint1y << endl;
+	cout << "Joint2x :" << joint2x << endl;
+	cout << "Joint2y :" << joint2y << endl;
+	cout << "Paintx :" << paintx << endl;
+	cout << "Painty :" << painty << endl << endl;
+
+	cout << "Angles for robot positions: " << endl;
+	cout << "-------------------------------" << endl;
+	cout << "Theta 1: " << theta1 << endl;
+	cout << "Theta 2: " << theta2 << endl << endl;
+};
+
 void Robot::paintBrushYAdjust(float amount) {
 	if (reachable(paintx, painty + amount)) {
 		painty += amount;
