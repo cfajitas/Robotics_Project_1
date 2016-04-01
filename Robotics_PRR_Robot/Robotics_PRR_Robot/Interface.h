@@ -32,6 +32,8 @@ public:
 	static Interface* getInstance();
 	static Interface* getInstance(int argc, char** argv);
 
+	//DWORD WINAPI RunServer(LPVOID lpParameter);
+
 	// =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
 	// =~=~=~  VARIABLES  ~=~=~=~=~=~=~=~
 	// =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
@@ -44,6 +46,8 @@ public:
 
 	Server* server;
 	Client* client;
+
+	bool simulate_delay;
 
 	// =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
 	// =~=~=~  CONSTRUCTORS  =~=~=~=~=~=~
@@ -88,6 +92,9 @@ public:
 	// Settings
 	static void increaseStep();
 	static void decreaseStep();
+
+
+	static void serverFinish();
 
 };
 

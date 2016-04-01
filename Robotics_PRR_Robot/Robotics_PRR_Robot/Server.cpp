@@ -1,7 +1,10 @@
 #include "Server.h"
 
-Server::Server(char *ip, char *port)
+Server::Server(char *ip, char *port,  ServerCallback callBack, Robot* _bot)
 {
+	this->callBack = callBack;
+	bot = _bot;
+
 	iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
 	ZeroMemory(&hints, sizeof(hints));
 	hints.ai_family = AF_INET;
@@ -29,16 +32,54 @@ Server::Server(char *ip, char *port)
 	if (ClientSocket == INVALID_SOCKET) {
 		printf("Accept Failed: %d\n", WSAGetLastError());
 	}
+
 }
 
+//serverthread function
 char* Server::ServerRun()
 {
-	iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
-	if (iResult <= 0)
+	while (true) {
+		iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
+
+		if (iResult <= 0)
+		{
+			// Parse the values you recieved and pass those to 'robot'
+			isDone = false;
+		}
+		
+	DWORD mResult;
+
+	//wait for mutex
+	mResult
+		= WaitForSingleObject(
+		bot->ghMutex,    // handle to mutex
+		INFINITE);  // no time-out interval
+
+	switch (mResult)
 	{
-		isDone = false;
+		// The thread got ownership of the mutex
+	case WAIT_OBJECT_0:
+		try {
+			//push to the queue
+			bot->commands.push(recvbuf);
+
+			// Release ownership of the mutex object
+			if (!ReleaseMutex(bot->ghMutex))
+			{
+				// Handle error.
+			}
+		}
+
+		catch(exception e){
+			//handle it yo
+		}
+		break;
+
 	}
-	return recvbuf;
+
+	}
+
+	return 0; //loops forever
 }
 
 bool Server::isServerDone()

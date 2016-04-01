@@ -18,6 +18,12 @@ Robot::Robot() {
 
 	theta2 = 90;
 	theta1 = 90;
+
+	ghMutex = CreateMutex(
+		NULL,              // default security attributes
+		FALSE,             // initially not owned
+		NULL);             // unnamed mutex
+
 }
 
 // =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
@@ -31,6 +37,7 @@ void Robot::joint0Adjust(float amount) {
 	joint2x += amount;
 	paintx += amount;
 }
+
 void Robot::joint1Adjust(float amount) {
 	theta1 += amount;
 	float radians = deg2rad(theta1);
@@ -40,6 +47,7 @@ void Robot::joint1Adjust(float amount) {
 	paintx = joint2x + (length2*cos(radians));
 	painty = joint2y + (length2*sin(radians));
 }
+
 void Robot::joint2Adjust(float amount) {
 	theta2 += amount;
 	float radians = deg2rad(theta2);
@@ -50,6 +58,7 @@ void Robot::joint2Adjust(float amount) {
 void Robot::paintBrushXAdjust(float amount) {
 	
 	joint0Adjust(amount);
+	printf("ROBOT CALLED!!!! value = %d", joint0x);
 
 	//Using sliding for left and right inverse kinematics renders
 	//all code below irrevlant
@@ -105,8 +114,12 @@ void Robot::paintBrushYAdjust(float amount) {
 			theta1 += angle1;
 
 		float radians = deg2rad(theta1);
+
+
+
 		joint2x = joint1x + (length1*cos(radians));
 		joint2y = joint1y + (length1*sin(radians));
+
 		/*
 		radians = deg2rad(theta2+=alpha);
 		paintx = joint2x + (length2*cos(radians));

@@ -5,6 +5,9 @@
 #include<stdlib.h>
 #include<math.h>
 #include<vector>
+#include<queue>
+
+#include <Windows.h>
 
 //cout for testing purposes
 #include<iostream>
@@ -45,6 +48,9 @@ public:
 	float theta2;
 	float theta1;
 
+	//queue of commands from the server
+	queue<char*> commands;
+
 	// =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
 	// =~=~=~  CONSTRUCTORS  =~=~=~=~=~=~
 	// =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
@@ -69,7 +75,8 @@ public:
 	float rad2deg(float n);
 	float deg2rad(float n);
 
-
+	//MUTEX to allow synchronzation of server and client threads
+	HANDLE ghMutex;
 
 };
 
