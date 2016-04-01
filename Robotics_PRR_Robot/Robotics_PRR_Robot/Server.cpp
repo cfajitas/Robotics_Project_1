@@ -38,6 +38,10 @@ Server::Server(char *ip, char *port,  ServerCallback callBack, Robot* _bot)
 //serverthread function
 char* Server::ServerRun()
 {
+	for (int i = 0; i < recvbuflen; ++i)
+	{
+		recvbuf[i] = NULL;
+	}
 	while (true) {
 		iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
 
