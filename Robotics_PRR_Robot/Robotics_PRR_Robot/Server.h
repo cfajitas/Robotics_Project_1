@@ -10,10 +10,13 @@
 #include <ws2tcpip.h>
 #include <iphlpapi.h>
 #include <stdio.h>
+#include "Robot.h"
 #pragma comment(lib, "Ws2_32.lib")
 #define DEFAULT_IP "127.0.0.1"
 #define DEFAULT_PORT "50000"
 #define DEFAULT_BUFLEN 512
+
+typedef void(*ServerCallback)();
 
 using namespace std;
 class Server
@@ -27,7 +30,11 @@ public:
 	bool isDone = true;
 	SOCKET ListenSocket = INVALID_SOCKET;
 	SOCKET ClientSocket = INVALID_SOCKET;
-	Server(char *ip, char *port);
+
+	Robot* bot;
+	ServerCallback callBack;
+
+	Server(char *ip, char *port, ServerCallback callBack, Robot* bot);
 	char* ServerRun();
 	bool isServerDone();
 	void ServerShutDown();
