@@ -14,6 +14,11 @@
 
 using namespace std;
 
+struct command {
+	char* command_value;
+	double time;
+};
+
 class Robot {
 public:
 
@@ -49,7 +54,12 @@ public:
 	float theta1;
 
 	//queue of commands from the server
-	queue<char*> commands;
+	queue<command*> commands;
+
+	bool delay_active;
+
+	time_t now;
+	time_t prev;
 
 	// =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
 	// =~=~=~  CONSTRUCTORS  =~=~=~=~=~=~

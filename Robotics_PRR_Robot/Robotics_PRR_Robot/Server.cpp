@@ -61,7 +61,17 @@ char* Server::ServerRun()
 	case WAIT_OBJECT_0:
 		try {
 			//push to the queue
-			bot->commands.push(message);
+
+			command* c = new command();
+			c->command_value = recvbuf;
+			
+			if (bot->delay_active) {
+				c->time = 2.0;
+			}
+			else
+				c->time = 0;
+
+			bot->commands.push(c);
 
 			// Release ownership of the mutex object
 			if (!ReleaseMutex(bot->ghMutex))

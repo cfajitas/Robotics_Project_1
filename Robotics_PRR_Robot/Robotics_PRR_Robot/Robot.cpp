@@ -24,6 +24,8 @@ Robot::Robot() {
 		FALSE,             // initially not owned
 		NULL);             // unnamed mutex
 
+	delay_active = false;
+
 }
 
 // =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~

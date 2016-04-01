@@ -1,3 +1,4 @@
 ﻿  Interface.cpp
-c:\users\brant carthel\desktop\classes-spring 2016\robotics_project_1\robotics_prr_robot\robotics_prr_robot\interface.cpp(141): warning C4101: 'buttonName': unreferenced local variable
+c:\users\brant carthel\desktop\classes-spring 2016\robotics_project_1\robotics_prr_robot\robotics_prr_robot\interface.cpp(150): warning C4101: 'buttonName': unreferenced local variable
+c:\users\brant carthel\desktop\classes-spring 2016\robotics_project_1\robotics_prr_robot\robotics_prr_robot\interface.cpp(281): warning C4018: '<': signed/unsigned mismatch
   Robotics_PRR_Robot.vcxproj -> C:\Users\Brant Carthel\Desktop\Classes-Spring 2016\Robotics_Project_1\Robotics_PRR_Robot\Debug\Robotics_PRR_Robot.exe
