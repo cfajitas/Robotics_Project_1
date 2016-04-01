@@ -38,12 +38,9 @@ Server::Server(char *ip, char *port,  ServerCallback callBack, Robot* _bot)
 //serverthread function
 char* Server::ServerRun()
 {
-	for (int i = 0; i < recvbuflen; ++i)
-	{
-		recvbuf[i] = NULL;
-	}
 	while (true) {
-		iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
+		char* incomingMessage = new char[DEFAULT_BUFLEN];
+		iResult = recv(ClientSocket, incomingMessage, DEFAULT_BUFLEN, 0);
 
 		if (iResult <= 0)
 		{
@@ -65,7 +62,17 @@ char* Server::ServerRun()
 	case WAIT_OBJECT_0:
 		try {
 			//push to the queue
-			bot->commands.push(recvbuf);
+
+			command* c = new command();
+			c->command_value = incomingMessage;
+			
+			if (bot->delay_active) {
+				c->time = 2.0;
+			}
+			else
+				c->time = 0;
+
+			bot->commands.push(c);
 
 			// Release ownership of the mutex object
 			if (!ReleaseMutex(bot->ghMutex))

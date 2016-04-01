@@ -14,6 +14,11 @@
 
 using namespace std;
 
+struct command {
+	char* command_value;
+	double time;
+};
+
 class Robot {
 public:
 
@@ -49,7 +54,12 @@ public:
 	float theta1;
 
 	//queue of commands from the server
-	queue<char*> commands;
+	queue<command*> commands;
+
+	bool delay_active;
+
+	time_t now;
+	time_t prev;
 
 	// =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
 	// =~=~=~  CONSTRUCTORS  =~=~=~=~=~=~
@@ -74,7 +84,9 @@ public:
 	bool reachable(float x, float y);
 	float rad2deg(float n);
 	float deg2rad(float n);
-
+	void inverse_kinematics(float px, float py, float alpha);
+	void get_robot_info();
+	
 	//MUTEX to allow synchronzation of server and client threads
 	HANDLE ghMutex;
 

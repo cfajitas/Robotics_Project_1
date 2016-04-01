@@ -1,6 +1,8 @@
 #include "Interface.h"
 #include <queue>
 #include <Windows.h>
+#include <ctime>
+#include <chrono>
 
 //store thread data
 struct thread_data
@@ -49,6 +51,7 @@ Interface::Interface(int argc, char** argv) {
 		simulate_delay = false; //change variable according to button instead
 
 		//run threads (server side only)
+		robot->prev = std::time(NULL);
 		CreateThread(NULL, 0, RunServerThread, new thread_data(0), 0, 0);
 		CreateThread(NULL, 0, RunGUIThread, new thread_data(1), 0, 0);
 	}
@@ -87,8 +90,8 @@ Interface::Interface(int argc, char** argv) {
 		buttons.push_back(new Button("Right", paintBrushSlideRight));
 
 	// Settings
-		buttons.push_back(new Button("+", increaseStep));
-		buttons.push_back(new Button("-", decreaseStep));
+		buttons.push_back(new Button("+Delay", increaseStep));
+		buttons.push_back(new Button("-Delay", decreaseStep));
 
 		graphics->positionButtons(buttons);
 
@@ -232,17 +235,19 @@ void Interface::paintBrushSlideDown() {
 
 
 void Interface::increaseStep() {
-	Interface::getInstance()->robot->joint_rotate_amount++;
-	Interface::getInstance()->robot->joint_slide_amount++;
-	Interface::getInstance()->robot->paint_slide_amount++;
-	Interface::getInstance()->graphics->paint_radius++;
+	//Interface::getInstance()->robot->joint_rotate_amount++;
+	//Interface::getInstance()->robot->joint_slide_amount++;
+	//Interface::getInstance()->robot->paint_slide_amount++;
+	//Interface::getInstance()->graphics->paint_radius++;
+	Interface::getInstance()->robot->delay_active = true;
 }
 
 void Interface::decreaseStep() {
-	Interface::getInstance()->robot->joint_rotate_amount--;
-	Interface::getInstance()->robot->joint_slide_amount--;
-	Interface::getInstance()->robot->paint_slide_amount--;
-	Interface::getInstance()->graphics->paint_radius--;
+	//Interface::getInstance()->robot->joint_rotate_amount--;
+	//Interface::getInstance()->robot->joint_slide_amount--;
+	//Interface::getInstance()->robot->paint_slide_amount--;
+	//Interface::getInstance()->graphics->paint_radius--;
+	Interface::getInstance()->robot->delay_active = false;
 }
 
 
@@ -267,11 +272,31 @@ void Interface::serverFinish() {
 		case WAIT_OBJECT_0:
 			try {
 				//pull from the command queue
+				Interface::getInstance()->robot->now = std::time(NULL);
 				if (!Interface::getInstance()->robot->commands.empty()) {
-					new_command = Interface::getInstance()->robot->commands.front();
+
+					double time_elapsed = difftime(Interface::getInstance()->robot->now, Interface::getInstance()->robot->prev);
+
+					int count = 0;
+					while (count < Interface::getInstance()->robot->commands.size()) {
+						command* c = Interface::getInstance()->robot->commands.front();
+						c->time = c->time - abs(time_elapsed);
+						Interface::getInstance()->robot->commands.pop();
+						Interface::getInstance()->robot->commands.push(c);
+						++count;
+					}
+
+					command* c = Interface::getInstance()->robot->commands.front();
 
 					//remove command
-					Interface::getInstance()->robot->commands.pop();
+					if (c->time <= 0) {
+						new_command = c->command_value;
+						Interface::getInstance()->robot->commands.pop();
+					}
+					else {
+						//printf("Not yet time = %f\n", c->time);
+						new_command = "VOID";
+					}
 				}
 
 				// Release ownership of the mutex object
@@ -284,6 +309,7 @@ void Interface::serverFinish() {
 			catch(exception e) {
 				//expections...
 			}
+
 			break;
 
 		}
@@ -402,10 +428,11 @@ void Interface::serverFinish() {
 		}
 
 		//delay if active
-		if (Interface::getInstance()->simulate_delay)
-			Sleep(2000);
+		//if (Interface::getInstance()->simulate_delay)
+			//Sleep(2000);
 
 		//update graphics
+		Interface::getInstance()->robot->prev = Interface::getInstance()->robot->now;
 		Interface::getInstance()->drawUpdate();
 		glutPostRedisplay();
 	}

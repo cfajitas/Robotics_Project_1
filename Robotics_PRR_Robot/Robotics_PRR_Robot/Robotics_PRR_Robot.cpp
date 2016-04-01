@@ -87,14 +87,14 @@ int main(int argc, char** argv) {
 			printf("ERROR Enter Valid Input \n");
 		}
 	}
+	//Set ip here for easy testing
+	//IPADDRESS = "10.0.1.59";
 
+	//**INPUTING IP CURRENTLY BROKEN
 	if (MODE == 1) {
 		printf("Please Enter IP Address\n");
 		scanf_s("%s", IPADDRESS, 1024);
 	}
-
-	//Set ip here for easy testing
-	//IPADDRESS = "10.0.1.59";
 
 	Interface::getInstance(argc, argv);
 
