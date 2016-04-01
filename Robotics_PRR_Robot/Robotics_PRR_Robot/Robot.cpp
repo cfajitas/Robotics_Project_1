@@ -158,7 +158,8 @@ void Robot::get_robot_info() {
 void Robot::paintBrushYAdjust(float amount) {
 	if (reachable(paintx, painty + amount)) {
 		painty += amount;
-
+		
+		// inverse_kinematics(paintx, painty, theta1 + theta2);
 		//float phi = rad2deg(acos(deg2rad((paintx*paintx+painty*painty+length1*length1-length2*length2)/(2*length1*sqrtf(paintx*paintx+painty*painty)))));
 		float paintxT = paintx - joint1x;
 		float paintyT = painty - joint1y;
