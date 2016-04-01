@@ -45,9 +45,10 @@ void Robot::joint1Adjust(float amount) {
 	float radians = deg2rad(theta1);
 	joint2x = joint1x + (length1*cos(radians));
 	joint2y = joint1y + (length1*sin(radians));
-	radians = deg2rad(theta2);
-	paintx = joint2x + (length2*cos(radians));
-	painty = joint2y + (length2*sin(radians));
+	//radians = deg2rad(theta2);
+	//paintx = joint2x + (length2*cos(radians));
+	//painty = joint2y + (length2*sin(radians));
+	joint2Adjust(amount);
 }
 
 void Robot::joint2Adjust(float amount) {
