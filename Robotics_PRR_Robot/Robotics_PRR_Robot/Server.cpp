@@ -39,7 +39,8 @@ Server::Server(char *ip, char *port,  ServerCallback callBack, Robot* _bot)
 char* Server::ServerRun()
 {
 	while (true) {
-		iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
+		char* incomingMessage = new char[DEFAULT_BUFLEN];
+		iResult = recv(ClientSocket, incomingMessage, DEFAULT_BUFLEN, 0);
 
 		if (iResult <= 0)
 		{
@@ -63,7 +64,7 @@ char* Server::ServerRun()
 			//push to the queue
 
 			command* c = new command();
-			c->command_value = recvbuf;
+			c->command_value = incomingMessage;
 			
 			if (bot->delay_active) {
 				c->time = 2.0;
