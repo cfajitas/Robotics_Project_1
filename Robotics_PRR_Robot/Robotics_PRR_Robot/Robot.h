@@ -74,6 +74,8 @@ public:
 	bool reachable(float x, float y);
 	float rad2deg(float n);
 	float deg2rad(float n);
+	void inverse_kinematics(float px, float py, float alpha);
+	void get_robot_info();
 
 	//MUTEX to allow synchronzation of server and client threads
 	HANDLE ghMutex;
